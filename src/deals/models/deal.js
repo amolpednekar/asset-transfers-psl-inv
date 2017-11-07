@@ -13,7 +13,11 @@ var dealsSchema = new Schema({
     },
     amount: {
         type: Number,
-        required: true
+        required: true,
+        validate: {
+            validator: Number.isInteger,
+            message: '{VALUE} is not an integer value'
+        }
     }
 }, {
     timestamps: {

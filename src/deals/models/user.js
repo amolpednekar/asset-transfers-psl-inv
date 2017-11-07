@@ -13,11 +13,19 @@ var userSchema = new Schema({
     },
     balance: {
         type: Number,
-        required: true
+        required: true,
+        validate: {
+            validator: Number.isInteger,
+            message: '{VALUE} is not an integer value'
+        }
     },
     blocksMined: {
         type: Number,
-        required: true
+        required: true,
+        validate: {
+            validator: Number.isInteger,
+            message: '{VALUE} is not an integer value'
+        }
     }
 }, {
     timestamps: {

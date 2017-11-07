@@ -14,6 +14,10 @@ app.use(bodyParser.json());
 
 var port = process.env.PORT || 7071;
 var routes = require('./deals/routes')
+var handleError = (err)=>{
+    console.log("Got an error", err);
+}
+
 app.use('/', routes)
 app.listen(port);
 console.log('Rest Server listening on port ' + port);
