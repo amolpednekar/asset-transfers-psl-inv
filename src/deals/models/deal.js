@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
+
 var dealsSchema = new Schema({
     fromUser: {
         type: String,
@@ -10,15 +12,18 @@ var dealsSchema = new Schema({
         required: true
     },
     amount: {
-        type: Integer,
+        type: Number,
         required: true
     }
 }, {
-        timestamps: {
-            createdAt: 'created_at'
-        }
-    });
+    timestamps: {
+        createdAt: 'created_at'
+    }
+});
 
-const Deal = mongoose.model('Deal', publicationSchema);
+
+
+
+const Deal = mongoose.model('Deal', dealsSchema);
 
 module.exports = Deal;

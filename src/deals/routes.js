@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('./controller');
+
+const controller = require('./controllers/controller');
 
 // middleware to allow CORS
 router.use(function (req, res, next) {
@@ -9,4 +10,7 @@ router.use(function (req, res, next) {
     next();
 });
 
-router.get('/deals', controller.getTransactions);
+router.get('/users', controller.getUser);
+router.post('/newUser', controller.newUser);
+
+module.exports = router
