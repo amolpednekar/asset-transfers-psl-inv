@@ -10,8 +10,12 @@ var dealsSchema = new Schema({
         required: true
     },
     amount: {
-        type: Integer,
-        required: true
+        type: Number,
+        required: true,
+        validate: {
+            validator: Number.isInteger,
+            message: '{VALUE} is not an integer value'
+        }
     }
 }, {
         timestamps: {
@@ -19,6 +23,6 @@ var dealsSchema = new Schema({
         }
     });
 
-const Deal = mongoose.model('Deal', publicationSchema);
+const Deal = mongoose.model('Deal', dealsSchema);
 
 module.exports = Deal;

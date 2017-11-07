@@ -9,4 +9,4 @@ router.use(function (req, res, next) {
     next();
 });
 
-router.get('/deals', controller.getTransactions);
+router.get('deals', controller.createDeal());
