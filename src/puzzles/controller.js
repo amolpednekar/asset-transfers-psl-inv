@@ -63,7 +63,7 @@ function checkPuzzle(req, res, next) {
                         newBlock.save(function (err) {
                             if (err) {
                                 message = "Error, couldn't save block miner to DB!";
-                                console.log(message);
+                                console.log(message,err);
                                 res.status(500).json(message);
                             } else {
                                 console.log("Successfully saved block miner to DB!");
@@ -83,4 +83,30 @@ function checkPuzzle(req, res, next) {
 
 }
 
-module.exports = { savePuzzle, checkPuzzle }
+function blocks(req, res, next) {
+   
+  // Get all the users
+  Block.find({}, function (err, blocks) {
+    if (err) {
+      console.log("Error", err);
+
+      result = {
+        message: "error" + err
+      };
+
+      res.status(500).json(result);
+    }
+
+
+    res.status(200).json(blocks);
+
+    //all blocks
+    console.log(blocks);
+  });
+
+}
+
+
+
+
+module.exports = { savePuzzle, checkPuzzle ,blocks }
