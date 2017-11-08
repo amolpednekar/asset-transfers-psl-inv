@@ -6,24 +6,41 @@ const _ = require('lodash');
 var message = "";
 
 function savePuzzle(req, res, next) {
-    const newPuzzle = new Puzzle(req.body);
-    newPuzzle.save(function (err) {
+
+    // Find the last submitted Puzzle
+    Puzzle.findOne({}).limit(1).sort({ $natural: -1 }).exec((err, findLastPuzzleResponse) => {
+        console.log("findLastPuzzleResponse", findLastPuzzleResponse);
         if (err) {
-            message = "Error, couldn't save puzzle to DB!";
+            message = "Error, there was an error in the DB!";
             console.log(message);
             res.status(500).json(message);
+        } else if (findLastPuzzleResponse.status == "Answered") {   // If answered, proceed to saving new puzzle
+            const newPuzzle = new Puzzle(req.body);
+            newPuzzle.save(function (err) {
+                if (err) {
+                    message = "Error, couldn't save puzzle to DB!";
+                    console.log(message);
+                    res.status(500).json(message);
+                } else {
+                    console.log("Successfully saved puzzle to DB!");
+                    const response = req.body;
+                    const puzzleIdObj = {
+                        puzzleId: newPuzzle._id.toString()
+                    }
+                    _.assign(response, puzzleIdObj);
+
+                    res.status(200).json(response);
+                }
+            });
         } else {
-            console.log("Successfully saved puzzle to DB!");
-            const response = req.body;
-            const puzzleIdObj = {
-                puzzleId: newPuzzle._id.toString()
+            // Unanswered, send id & response
+            obj = {
+                msg: "Previous puzzle unanswered! Please wait",
+                pid: findLastPuzzleResponse._id
             }
-            _.assign(response, puzzleIdObj);
-
-            res.status(200).json(response);
+            res.send(obj)
         }
-    });
-
+    })
 }
 
 function checkPuzzle(req, res, next) {
@@ -49,9 +66,16 @@ function checkPuzzle(req, res, next) {
                     } else if (Object.keys(result2).length > 0) {
                         // Block table already has puzzle id entry!
                         console.log("Already solved!");
-                        res.send("Sorry, This Puzzle was already solved! Try again!")
+                        res.send("Sorry, Correct! , But this Puzzle was already solved! Try again!")
                     } else {
-
+                        // Change status if question to answered
+                        Puzzle.update({ _id: req.body.id }, { status: "Answered" }, (err, result4) => {
+                            if (err) {
+                                console.log("There was an error while changing the status!");
+                            } else {
+                                console.log("Updated!")
+                            }
+                        })
                         // Save mining winner in block table!
                         blockAttributes = {
                             pid: req.body.id,
@@ -73,7 +97,7 @@ function checkPuzzle(req, res, next) {
                         });
                     }
                 })
-            }else{
+            } else {
                 res.send("Sorry! Incorrect Answer!")
             }
         }

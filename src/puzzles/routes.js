@@ -7,6 +7,7 @@ const controller = require('./controller');
 router.use(function (req, res, next) {
     var origin = req.headers.origin;
     res.setHeader('Access-Control-Allow-Origin', "*");
+    res.setHeader('Access-Control-Allow-Headers', "Content-Type");
     next();
 });
 
