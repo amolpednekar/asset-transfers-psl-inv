@@ -1,5 +1,5 @@
 // grab the user model
-var User = require('../models/user');
+var User = require('./model');
 
 
 /**

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const controller = require('./controllers/controller');
+const controller = require('./controller');
 
 // middleware to allow CORS
 router.use(function (req, res, next) {
