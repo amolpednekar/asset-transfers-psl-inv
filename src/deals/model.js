@@ -20,13 +20,9 @@ var dealsSchema = new Schema({
         }
     },
     bid: {
-        type: Number,
+        type: String,
         default: null,
-        required: true,
-        validate: {
-            validator: Number.isInteger,
-            message: '{VALUE} is not an integer value'
-        }
+       
     }
 }, {
     timestamps: {
