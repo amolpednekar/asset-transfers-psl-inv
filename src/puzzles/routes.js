@@ -13,5 +13,6 @@ router.use(function (req, res, next) {
 
 router.post('/puzzle/answer', controller.checkPuzzle);
 router.post('/puzzle', controller.savePuzzle);
+router.get('/puzzle',controller.getLatestPuzzle)
 
 module.exports = router;

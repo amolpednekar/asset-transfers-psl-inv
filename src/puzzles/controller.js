@@ -14,7 +14,7 @@ function savePuzzle(req, res, next) {
             message = "Error, there was an error in the DB!";
             console.log(message);
             res.status(500).json(message);
-        } else if (findLastPuzzleResponse.status == "Answered") {   // If answered, proceed to saving new puzzle
+        } else if (findLastPuzzleResponse==null || findLastPuzzleResponse.status == "Answered") {   // If answered, proceed to saving new puzzle
             const newPuzzle = new Puzzle(req.body);
             newPuzzle.save(function (err) {
                 if (err) {
@@ -107,4 +107,14 @@ function checkPuzzle(req, res, next) {
 
 }
 
-module.exports = { savePuzzle, checkPuzzle }
+function getLatestPuzzle(req, res, next) {
+    Puzzle.findOne({}).limit(1).sort({ $natural: -1 }).exec((err, result) => {
+        if(err){
+            res.send(err);
+        }else{
+            res.json(result);
+        }
+    });
+}
+
+module.exports = { savePuzzle, checkPuzzle, getLatestPuzzle }
