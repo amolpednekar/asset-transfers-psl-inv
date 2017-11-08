@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 
 const userRoutes = require('./users/routes');
 const dealRoutes = require('./deals/routes');
+const puzzleRoutes = require('./puzzles/routes');
 
 mongoose.Promise = global.Promise;
 
@@ -34,7 +35,7 @@ app.use(function (err, req, res, next) {
 });
 
 app.use('/', dealRoutes);
-
+app.use('/', puzzleRoutes)
 app.listen(port);
 
 console.log('Rest Server listening on port ' + port);

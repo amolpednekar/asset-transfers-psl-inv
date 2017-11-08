@@ -2,24 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var puzzleSchema = new Schema({
-    pid: {
+    question: {
         type: String,
         required: true
-    },
-    userName: {
+    }, 
+    answer: {
         type: String,
         required: true
     },
 
 }, {
-    timestamps: {
-        createdAt: 'created_at'
-    }
-});
+        timestamps: {
+            createdAt: 'created_at'
+        }
+    });
 
-
-
-
-const  Puzzle= mongoose.model('Puzzle', puzzleSchema);
+const Puzzle = mongoose.model('Puzzle', puzzleSchema);
 
 module.exports = Puzzle;

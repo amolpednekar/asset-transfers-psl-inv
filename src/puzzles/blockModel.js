@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 
 var blockSchema = new Schema({
-    bid: {
+    pid: {
         type: String,
         required: true
     },

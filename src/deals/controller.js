@@ -1,4 +1,5 @@
 const Deal = require('./model');
+const _ = require('lodash')
 
 var message = "";
 
@@ -12,8 +13,13 @@ function createDeal(req, res, next) {
             res.status(500).json(message);
         } else {
             console.log("Successfully saved deal to DB!");
-            res.status(200).json(req.body);
-
+            const response = req.body;
+            const dealIdObj = {
+                dealId : newDeal._id.toString()
+            }
+            _.assign(response, dealIdObj);
+            
+            res.status(200).json(response);
             // TODO - UPDATE USER BALANCES
         }
     })
@@ -22,7 +28,7 @@ function createDeal(req, res, next) {
 
 function getAllDeals(req, res, next) {
 
-    const deals = Deal.find({}, function(err, obj){
+    const deals = Deal.find({}).limit(10).exec(function(err, obj){
         console.log(obj)
         res.send(obj);
     });
