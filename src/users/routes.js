@@ -10,7 +10,13 @@ router.use(function (req, res, next) {
     next();
 });
 
-router.get('/users', controller.getUser);
+router.get('/getUsers', controller.getUsers);
+router.get('/getUserDetails', controller.getUserDetails);
+
+
+
 router.post('/newUser', controller.newUser);
+router.post('/login', controller.login);
+
 
 module.exports = router;

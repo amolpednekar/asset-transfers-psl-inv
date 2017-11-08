@@ -36,6 +36,7 @@ app.use(function (err, req, res, next) {
 
 app.use('/', dealRoutes);
 app.use('/', puzzleRoutes)
+app.use('/', userRoutes);
 app.listen(port);
 
 console.log('Rest Server listening on port ' + port);

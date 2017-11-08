@@ -11,42 +11,67 @@ exports.newUser = function (req, res) {
   console.log('======= New User RES API =======');
   var username = req.body.username;
   var password = req.body.password;
- 
 
-console.log("details ",username,password)
 
-// create a new user
-var newUser = User({
-  userName: username,
-  password: password,
-  balance: 100,
-  blocksMined:0
-});
+  console.log("details ", username, password)
 
-// save the user
-newUser.save(function(err) {
-  if (err) 
-  {
-    throw err;
-  
-    result = {
-      Status: 'Fail',
-      Data: {
-        message:"error"+err
-      }
-  };
-  res.send(result);
-  }
-  console.log('User created!');
-  
-  result = {
-    Status: 'Success',
-    Data: {
-        message:"User created!"
+  // create a new user
+  var newUser = User({
+    userName: username,
+    password: password,
+    balance: 100,
+    blocksMined: 0
+  });
+
+
+  // Get the user details
+  User.find({
+    userName: username
+  }, function (err, user) {
+    if (err) {
+      console.log("Error", err);
+      result = {
+        message: "error" + err
+      };
+
+      res.status(500).json(result);
+
     }
-};
-res.send(result);
-});
+
+      if(!user.length )
+      {
+       
+      // save the user
+      newUser.save(function (err) {
+        if (err) {
+          console.log("Error", err);
+          result = {
+            message: "error" + err
+          };
+
+          res.status(500).json(result);
+        }
+
+        console.log('User created!');
+
+        result = {
+          message: "User created!"
+        };
+        res.status(200).json(result);
+      });
+
+
+    } else {
+      console.log('User Exists!',user.length);
+
+      result = {
+        message: "User Exists!"
+      };
+      res.status(500).json(result);
+    }
+  });
+
+
 
 
 
@@ -59,46 +84,55 @@ exports.login = function (req, res) {
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   console.log('======= user login REST API =======');
 
-  username=req.body.username;
-  password=req.body.password;
-// Get the user details
-User.find({ userName: username }, function(err, user) {
-  if (err) 
-  {
-    throw err;
-  
-    result = {
-      Status: 'Fail',
-      Data: {
-        message:"error"+err
-      }
-  };
-  res.send(result);
-  
-  }
+  username = req.body.username;
+  password = req.body.password;
 
-if( user.password == password)
-{
-  result = {
-      Status: 'Success',
-      Data: {
-          message:"login success"
-      }
-  };
-  res.send(result);
-}
-else
-{
-  result = {
-    Status: 'Fail',
-    Data: {
-        message:"password not matching"
+  console.log(req.body)
+  // Get the user details
+  User.findOne({
+    userName: username
+  }, function (err, user) {
+    if (err) {
+      console.log("Error", err);
+
+      result = {
+        message: "error" + err
+      };
+
+      res.status(500).json(result);
+
     }
-};
-res.send(result);
-}
+console.log(user);
+    if (!user) {
+      result = {
+        message: "User Not Found"
+      };
+      res.status(200).json(result);
+    } else {
+
+console.log("pass",user.password,password)
+
+      if (user.password == password) {
+        
+        result = {
+          message: "login success"
+        };
+        res.status(200).json(result);
+      } else {
+        result = {
+          message: "password not matching"
+        };
+        res.status(200).json(result);
+      }
   
-});
+  
+    }
+  
+    });
+  
+     
+    
+
 
 
 
@@ -108,96 +142,66 @@ res.send(result);
 
 
 //Get All user
-exports.getUser = function (req, res) {
+exports.getUsers = function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   console.log('======= Get user details REST API =======');
 
 
-// Get all the users
-User.find({}, function(err, users) {
-  if (err) throw err;
+  // Get all the users
+  User.find({}, function (err, users) {
+    if (err) {
+      console.log("Error", err);
 
+      result = {
+        message: "error" + err
+      };
 
-  result = {
-    Status: 'Success',
-    Data: {
-        message:users
+      res.status(500).json(result);
     }
+
+
+    res.status(200).json(users);
+
+    // Object of all the users
+    console.log(users);
+  });
+
 };
-res.send(result);
-
-  // Object of all the users
-  console.log(users);
-});
-
-};
 
 
-// Get User Balance
-exports.getUserBalance = function (req, res) {
+// Get User Details
+exports.getUserDetails = function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   console.log('======= Get user details REST API =======');
-  var username=req.body.username;
+  var username = req.query.username;
 
-// Get the User Balance
-User.find({userName:username}, function(err, user) {
-  if (err) throw err;
+  // Get the User Details
+  User.findOne({
+    userName: username
+  }, function (err, user) {
+    if (err) {
+      console.log("Error", err);
 
-var username=req.body.username;
-  result = {
-    Status: 'Success',
-    Data: {
-        message:user.balance
+      result = {
+        message: "error" + err
+      };
+
+      res.status(500).json(result);
     }
-};
-res.send(result);
 
-});
-
-};
-
-
-
-//Get user blocks mined
-exports.getUserBlocks = function (req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  console.log('======= Get UserBlocks REST API =======');
-
-var username=req.body.username;
-// Get the user details
-User.find({userName:username}, function(err, user) {
-  if (err) 
+    if(!user)
   {
-    throw err;
-  
-    result = {
-      Status: 'Fail',
-      Data: {
-          message:"error"+err
-      }
-  };
-  res.send(result);
+       result = {
+        message: "User Not Found"
+      };
+      res.status(200).json(result);
   }
-
-
-  result = {
-    Status: 'Success',
-    Data: {
-        message:user.blocksMined
-    }
-};
-res.send(result);
-
-});
+  else
+  {
+    res.status(200).json(user);
+  }
+  });
 
 };
-
-
-
-
-
-
-
