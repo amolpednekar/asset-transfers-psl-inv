@@ -13,4 +13,4 @@ router.use(function (req, res, next) {
 router.get('/deals', controller.getAllDeals);
 router.post('/deals', controller.createDeal);
 
-module.exports = router
+module.exports = router;

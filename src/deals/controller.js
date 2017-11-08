@@ -22,9 +22,10 @@ function createDeal(req, res, next) {
 
 function getAllDeals(req, res, next) {
 
-    const deals = Deal.findOne({fromUser:"amol"});
-    console.log(deals);
-    res.send(deals);
+    const deals = Deal.find({}, function(err, obj){
+        console.log(obj)
+        res.send(obj);
+    });
 
 }
 
