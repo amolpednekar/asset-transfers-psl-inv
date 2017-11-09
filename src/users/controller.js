@@ -101,34 +101,12 @@ exports.login = function (req, res) {
       result = {
         message: "User Not Found"
       };
-<<<<<<< HEAD
-      res.status(409).json(result);
-    } else {
-
-console.log("pass",user.password,password)
-
-      if (user.password == password) {
-        
-        result = {
-          message: "login success"
-        };
-        res.status(200).json(result);
-      } else {
-        result = {
-          message: "password not matching"
-        };
-        res.status(409).json(result);
-      }
-  
-  
-=======
       res.status(404).json(result);
     } else {
       result = {
         message: "Login successful"
       };
       res.status(200).json(result);
->>>>>>> 316f825550844bad16a00387b176e971425f03ae
     }
   });
 
