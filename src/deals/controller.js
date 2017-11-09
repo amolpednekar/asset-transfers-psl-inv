@@ -19,7 +19,7 @@ function createDeal(req, res, next) {
             }
             _.assign(response, dealIdObj);
 
-            res.status(200).json(response);
+            res.status(201).json(response);
             // TODO - UPDATE USER BALANCES
         }
     })

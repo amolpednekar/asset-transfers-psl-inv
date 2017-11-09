@@ -6,7 +6,8 @@ const controller = require('./controller');
 // middleware to allow CORS
 router.use(function (req, res, next) {
     var origin = req.headers.origin;
-    res.setHeader('Access-Control-Allow-Origin', "*");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
     next();
 });
 

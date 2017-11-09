@@ -33,7 +33,7 @@ function savePuzzle(req, res, next) {
                     }
                     _.assign(response, puzzleIdObj);
 
-                    res.status(200).json(response);
+                    res.status(201).json(response);
                 }
             });
         } else {
@@ -42,7 +42,7 @@ function savePuzzle(req, res, next) {
                 msg: "Previous puzzle unanswered! Please wait",
                 pid: findLastPuzzleResponse._id
             }
-            res.send(obj)
+           res.status(409).json(obj);
         }
     })
 }
@@ -54,11 +54,14 @@ function checkPuzzle(req, res, next) {
         _id: req.body.id
     }).exec((err, result1) => {
         if (err) {
-            console.log("There was an error!");
-            res.send("Error! Invalid Puzzle Id!")
+            console.log("There was an error!",err);
+            message = "Error! Invalid Puzzle Id!";
+            res.status(409).json(message);
+          
         } else if (Object.keys(result1).length == 0) {
             console.log("Puzzle doesnt exist!")
-            res.send("Error! Puzzle doesnt exist!");
+            message = "Error! Puzzle doesnt exist!";
+            res.status(409).json(message);
         } else {
             console.log("Object.keys(res).length", Object.keys(result1).length)
             console.log("Found puzzle!", result1)
@@ -70,11 +73,13 @@ function checkPuzzle(req, res, next) {
                     pid: req.body.id
                 }).exec((err, result2) => {
                     if (err) {
-                        console.log("There was an error!");
+                        console.log("There was an error!",err);
                     } else if (Object.keys(result2).length > 0) {
                         // Block table already has puzzle id entry!
                         console.log("Already solved!", result2);
-                        res.send("Sorry, Correct! , But this Puzzle was already solved! Try again!")
+                        message = "Sorry, Correct! , But this Puzzle was already solved! Try again!";
+                        res.status(409).json(message);
+                     
                     } else {
                         // Change status if question to answered
                         Puzzle.update({
@@ -84,6 +89,9 @@ function checkPuzzle(req, res, next) {
                         }, (err, result4) => {
                             if (err) {
                                 console.log("There was an error while changing the status!", err);
+                                message = "There was an error while changing the status!";
+                                res.status(500).json(message);
+                                
                             } else {
                                 console.log("Updated!")
                             }
@@ -94,7 +102,7 @@ function checkPuzzle(req, res, next) {
                         // Save mining winner in block table!
                         blockAttributes = {
                             pid: req.body.id,
-                            userName: req.body.userName
+                            userName: req.body.username
                         }
                         const newBlock = new Block(blockAttributes);
 
@@ -122,7 +130,7 @@ function checkPuzzle(req, res, next) {
 
                                     // user block mined.
                                     User.update({
-                                        userName: req.body.userName
+                                        userName: req.body.username
                                     }, {
                                         $inc: {
                                             blocksMined: 1
@@ -144,7 +152,8 @@ function checkPuzzle(req, res, next) {
                     }
                 })
             } else {
-                res.send("Sorry! Incorrect Answer!")
+                message = "Sorry! Incorrect Answer!";
+                res.status(409).json(message);
             }
         }
 
@@ -184,9 +193,11 @@ function getLatestPuzzle(req, res, next) {
         $natural: -1
     }).exec((err, result) => {
         if (err) {
-            res.send(err);
+            message="Error, while fetching latest puzzle";
+            console.log(message,err);
+            res.status(500).json(message);
         } else {
-            res.json(result);
+            res.status(200).json(result);
         }
     });
 }
@@ -195,13 +206,16 @@ function getLatestPuzzle(req, res, next) {
 function allPuzzles(req, res, next) {
     Puzzle.find({}).exec((err, results) => {
         if (err) {
-            res.send(err);
+            message="Error, while fetching puzzles";
+            console.log(message,err);
+            res.status(500).json(message);
         } else {
-            res.json(results);
+            res.status(200).json(results);
         }
     });
 }
 
+//************************************Only for testing purposes*******************************************
 function clearAll(req, res, next) {
     Puzzle.remove({}).exec((err, results) => {
         if (err) {

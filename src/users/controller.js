@@ -6,8 +6,6 @@ var User = require('./model');
  * newUser: REST API to create new user.  
  */
 exports.newUser = function (req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   console.log('======= New User RES API =======');
   var username = req.body.username;
   var password = req.body.password;
@@ -24,14 +22,14 @@ exports.newUser = function (req, res) {
   });
 
 
-  // Get the user details
+  // Check if user exists
   User.find({
     userName: username
   }, function (err, user) {
     if (err) {
-      console.log("Error", err);
+      console.log("Error , while checking exixting user", err);
       result = {
-        message: "error" + err
+        message: "Error , while checking existing user" + err
       };
 
       res.status(500).json(result);
@@ -44,9 +42,9 @@ exports.newUser = function (req, res) {
       // save the user
       newUser.save(function (err) {
         if (err) {
-          console.log("Error", err);
+          console.log("Error , while saving new user", err);
           result = {
-            message: "error" + err
+            message: "Error,while saving new user" + err
           };
 
           res.status(500).json(result);
@@ -57,7 +55,7 @@ exports.newUser = function (req, res) {
         result = {
           message: "User created!"
         };
-        res.status(200).json(result);
+        res.status(201).json(result);
       });
 
 
@@ -67,7 +65,7 @@ exports.newUser = function (req, res) {
       result = {
         message: "User Exists!"
       };
-      res.status(500).json(result);
+      res.status(409).json(result);
     }
   });
 
@@ -80,23 +78,21 @@ exports.newUser = function (req, res) {
 
 // user login
 exports.login = function (req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   console.log('======= user login REST API =======');
 
   username = req.body.username;
   password = req.body.password;
 
   console.log(req.body)
-  // Get the user details
-  User.findOne({
+  // check if user exists 
+    User.findOne({
     userName: username
   }, function (err, user) {
     if (err) {
       console.log("Error", err);
 
       result = {
-        message: "error" + err
+        message: "error , while checking user exixts" + err
       };
 
       res.status(500).json(result);
@@ -107,7 +103,7 @@ console.log(user);
       result = {
         message: "User Not Found"
       };
-      res.status(200).json(result);
+      res.status(409).json(result);
     } else {
 
 console.log("pass",user.password,password)
@@ -122,7 +118,7 @@ console.log("pass",user.password,password)
         result = {
           message: "password not matching"
         };
-        res.status(200).json(result);
+        res.status(409).json(result);
       }
   
   
@@ -143,8 +139,6 @@ console.log("pass",user.password,password)
 
 //Get All user
 exports.getUsers = function (req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   console.log('======= Get user details REST API =======');
 
 
@@ -154,7 +148,7 @@ exports.getUsers = function (req, res) {
       console.log("Error", err);
 
       result = {
-        message: "error" + err
+        message: "Error , while fetching all users" + err
       };
 
       res.status(500).json(result);
@@ -172,8 +166,6 @@ exports.getUsers = function (req, res) {
 
 // Get User Details
 exports.getUserDetails = function (req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   console.log('======= Get user details REST API =======');
   var username = req.query.username;
 
@@ -182,7 +174,7 @@ exports.getUserDetails = function (req, res) {
     userName: username
   }, function (err, user) {
     if (err) {
-      console.log("Error", err);
+      console.log("Error , while fetching user details", err);
 
       result = {
         message: "error" + err
@@ -196,7 +188,7 @@ exports.getUserDetails = function (req, res) {
        result = {
         message: "User Not Found"
       };
-      res.status(200).json(result);
+      res.status(409).json(result);
   }
   else
   {
