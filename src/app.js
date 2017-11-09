@@ -25,7 +25,9 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 7071;
+cmdArgs = process.argv.slice(2);
+
+var port = parseInt(cmdArgs[0]) || process.env.PORT || 7071;
 
 app.use(function (err, req, res, next) {
     res.status(err.status).json({
