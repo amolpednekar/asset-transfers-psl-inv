@@ -145,8 +145,8 @@ exports.getUsers = function (req, res) {
 // Get User Details
 exports.getUserDetails = function (req, res) {
   console.log('======= Get user details REST API =======');
-  var username = req.query.username;
-
+  var username = req.params.username;
+console.log(username);
   // Get the User Details
   User.findOne({
     userName: username
