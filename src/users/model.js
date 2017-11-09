@@ -7,16 +7,13 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
-    password: {
-        type: String,
-        required: true
-    },
     balance: {
         type: Number,
         required: true,
+        min: 0,
         validate: {
             validator: Number.isInteger,
-            message: '{VALUE} is not an integer value'
+            message: '{VALUE} is not an integer value',
         }
     },
     blocksMined: {

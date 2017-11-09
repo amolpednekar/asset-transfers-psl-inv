@@ -34,9 +34,9 @@ app.use(function (err, req, res, next) {
     });
 });
 
-app.use('/', dealRoutes);
-app.use('/', puzzleRoutes)
-app.use('/', userRoutes);
+app.use('/deals/', dealRoutes);
+app.use('/puzzles/', puzzleRoutes)
+app.use('/users/', userRoutes);
 app.listen(port);
 
 console.log('Rest Server listening on port ' + port);
