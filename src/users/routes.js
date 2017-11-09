@@ -11,13 +11,15 @@ router.use(function (req, res, next) {
     next();
 });
 
-router.get('/all', controller.getUsers);
+router.get('/generate/names', controller.generateName);
+router.get('/', controller.getUsers);
 router.get('/:username', controller.getUserDetails);
 
 
 
 router.post('/register', controller.newUser);
 router.post('/login', controller.login);
+
 
 
 module.exports = router;

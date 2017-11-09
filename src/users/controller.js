@@ -1,7 +1,7 @@
 // grab the user model
 var User = require('./model');
 
-
+var Moniker = require('moniker');
 /**
  * newUser: REST API to create new user.  
  */
@@ -172,5 +172,19 @@ console.log(username);
     res.status(200).json(user);
   }
   });
+
+};
+
+
+// Generate usename
+exports.generateName = function (req, res) {
+  console.log('======= Generate usename REST API =======');
+
+  var names = Moniker.generator([Moniker.adjective, Moniker.noun],{
+    glue: '_'
+  });
+  console.log(names.choose());
+
+    res.status(200).json(names.choose());
 
 };

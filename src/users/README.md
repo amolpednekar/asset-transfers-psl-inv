@@ -2,7 +2,7 @@
 
 #### Register a new user 
 
-* Send `POST` to `users/register` with 
+* Send `POST` to `/users/register` with 
 header
 ```
 Content-Type: application/x-www-form-urlencoded
@@ -30,7 +30,7 @@ Request body
 
 #### Login a user
 
-* Send `POST` to `users/login` 
+* Send `POST` to `/users/login` 
 
 * Response (Success)
 ```json
@@ -47,7 +47,7 @@ Request body
 
 #### Get all users
 
-* Send `GET` to `users/all` 
+* Send `GET` to `/users` 
 
 * Response (Success)
 ```json
@@ -66,7 +66,7 @@ Request body
 ```
 #### Get User Details
 
-* Send `GET` to `users/:username` 
+* Send `GET` to `/users/:username` 
 
 * Response (Success)
 ```json
@@ -87,4 +87,14 @@ Request body
 {
     "message": "User Not Found"
 }
+```
+
+
+#### Generate username
+
+* Send `GET` to `/generate/names` 
+
+* Response (Success)
+```json
+"rigid_machine"
 ```

@@ -76,7 +76,7 @@ Request body
 
 #### Get All puzzles
 
-* Send `Get` to `/puzzles/all` with 
+* Send `Get` to `/puzzles` with 
 
 * Response (Success) 
 ```json

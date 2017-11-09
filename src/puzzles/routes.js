@@ -14,7 +14,7 @@ router.use(function (req, res, next) {
 router.post('/solve', controller.checkPuzzle);
 router.post('/save', controller.savePuzzle);
 router.get('/latest',controller.getLatestPuzzle)
-router.get('/all', controller.allPuzzles);
+router.get('/', controller.allPuzzles);
 
 
 router.get('/blocks', controller.blocks);
