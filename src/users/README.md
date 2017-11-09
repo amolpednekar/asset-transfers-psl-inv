@@ -53,13 +53,12 @@ Request body
 ```json
 [
     {
-        "_id": "5a03e468a6457d344c4e5efd",
-        "updatedAt": "2017-11-09T05:22:48.197Z",
-        "created_at": "2017-11-09T05:15:20.533Z",
-        "userName": "Siddesh2",
-        "password": "asdf123",
+        "_id": "5a0433aaf85c058190ee9c1b",
+        "updatedAt": "2017-11-09T10:53:30.648Z",
+        "created_at": "2017-11-09T10:53:30.648Z",
+        "userName": "Bob2",
         "balance": 100,
-        "blocksMined": 3,
+        "blocksMined": 0,
         "__v": 0
     }
 ]
@@ -71,11 +70,10 @@ Request body
 * Response (Success)
 ```json
 {
-    "_id": "5a03e5aaa6457d344c4e5f03",
-    "updatedAt": "2017-11-09T05:20:42.887Z",
-    "created_at": "2017-11-09T05:20:42.887Z",
-    "userName": "Siddesh",
-    "password": "asdf123",
+    "_id": "5a0433aaf85c058190ee9c1b",
+    "updatedAt": "2017-11-09T10:53:30.648Z",
+    "created_at": "2017-11-09T10:53:30.648Z",
+    "userName": "Bob",
     "balance": 100,
     "blocksMined": 0,
     "__v": 0
