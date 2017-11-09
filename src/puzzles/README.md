@@ -67,8 +67,8 @@ Request body
     "_id": "5a040346b503e14a58979f18",
     "updatedAt": "2017-11-09T07:27:02.052Z",
     "created_at": "2017-11-09T07:27:02.052Z",
-    "question": "what is love?",
-    "answer": "babyDonHurty",
+    "question": "what is 3+5+9?",
+    "answer": "17",
     "__v": 0,
     "status": "Unanswered"
 }
@@ -85,8 +85,8 @@ Request body
         "_id": "5a03e4c0a6457d344c4e5eff",
         "updatedAt": "2017-11-09T05:17:56.186Z",
         "created_at": "2017-11-09T05:16:48.876Z",
-        "question": "what is love?",
-        "answer": "babyDonHurty",
+        "question": "what is 3+5+9?",
+        "answer": "17",
         "__v": 0,
         "status": "Answered"
     }
