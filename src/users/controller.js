@@ -6,12 +6,10 @@ var Moniker = require('moniker');
  * newUser: REST API to create new user.  
  */
 exports.newUser = function (req, res) {
-  console.log('======= New User RES API =======');
+  console.log('======= New User REST API =======');
   var username = req.body.username;
-  var password = req.body.password;
 
-
-  console.log("details ", username, password)
+  console.log("details ", username);
 
   // create a new user
   var newUser = User({
@@ -44,19 +42,17 @@ exports.newUser = function (req, res) {
           result = {
             message: "Error,while saving new user" + err
           };
-
           res.status(500).json(result);
+
+        } else {
+          console.log('User created!');
+
+          result = {
+            message: "User created!"
+          };
+          res.status(201).json(result);
         }
-
-        console.log('User created!');
-
-        result = {
-          message: "User created!"
-        };
-        res.status(201).json(result);
       });
-
-
     } else {
       console.log('User Exists!', user.length);
 
@@ -83,7 +79,7 @@ exports.login = function (req, res) {
 
   console.log(req.body)
   // check if user exists 
-    User.findOne({
+  User.findOne({
     userName: username
   }, function (err, user) {
     if (err) {
@@ -146,7 +142,7 @@ exports.getUsers = function (req, res) {
 exports.getUserDetails = function (req, res) {
   console.log('======= Get user details REST API =======');
   var username = req.params.username;
-console.log(username);
+  console.log(username);
   // Get the User Details
   User.findOne({
     userName: username
@@ -166,11 +162,10 @@ console.log(username);
         message: "User Not Found"
       };
       res.status(409).json(result);
-  }
-  else
-  {
-    res.status(200).json(user);
-  }
+    }
+    else {
+      res.status(200).json(user);
+    }
   });
 
 };
@@ -180,11 +175,11 @@ console.log(username);
 exports.generateName = function (req, res) {
   console.log('======= Generate usename REST API =======');
 
-  var names = Moniker.generator([Moniker.adjective, Moniker.noun],{
+  var names = Moniker.generator([Moniker.adjective, Moniker.noun], {
     glue: '_'
   });
   console.log(names.choose());
 
-    res.status(200).json(names.choose());
+  res.status(200).json(names.choose());
 
 };
