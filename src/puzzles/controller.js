@@ -42,7 +42,7 @@ function savePuzzle(req, res, next) {
                 msg: "Previous puzzle unanswered! Please wait",
                 pid: findLastPuzzleResponse._id
             }
-           res.status(409).json(obj);
+            res.status(409).json(obj);
         }
     })
 }
@@ -54,10 +54,10 @@ function checkPuzzle(req, res, next) {
         _id: req.body.id
     }).exec((err, result1) => {
         if (err) {
-            console.log("There was an error!",err);
+            console.log("There was an error!", err);
             message = "Error! Invalid Puzzle Id!";
             res.status(409).json(message);
-          
+
         } else if (Object.keys(result1).length == 0) {
             console.log("Puzzle doesnt exist!")
             message = "Error! Puzzle doesnt exist!";
@@ -73,13 +73,13 @@ function checkPuzzle(req, res, next) {
                     pid: req.body.id
                 }).exec((err, result2) => {
                     if (err) {
-                        console.log("There was an error!",err);
+                        console.log("There was an error!", err);
                     } else if (Object.keys(result2).length > 0) {
                         // Block table already has puzzle id entry!
                         console.log("Already solved!", result2);
                         message = "Sorry, Correct! , But this Puzzle was already solved! Try again!";
                         res.status(409).json(message);
-                     
+
                     } else {
                         // Change status if question to answered
                         Puzzle.update({
@@ -91,7 +91,7 @@ function checkPuzzle(req, res, next) {
                                 console.log("There was an error while changing the status!", err);
                                 message = "There was an error while changing the status!";
                                 res.status(500).json(message);
-                                
+
                             } else {
                                 console.log("Updated!")
                             }
@@ -121,30 +121,33 @@ function checkPuzzle(req, res, next) {
                                     bid: null
                                 }, {
                                     bid: newBlock.bid.toString()
-                                },{multi: true}, function (err, deal) {
+                                }, {
+                                    multi: true
+                                }, function (err, deal) {
                                     if (err) {
                                         message = "Error! ,couldnt add block id to deal";
                                         console.log(message, err);
                                         res.status(500).json(message);
+                                    } else {
+
+                                        // user block mined.
+                                        User.update({
+                                            userName: req.body.username
+                                        }, {
+                                            $inc: {
+                                                blocksMined: 1
+                                            }
+                                        }, function (err, user) {
+                                            if (err) {
+                                                message = "Error, coudnt increment blocks mined!";
+                                                console.log(message, err);
+                                                res.status(500).json(message);
+                                            } else {
+                                                res.status(200).json(response);
+                                            }
+                                        })
+                                        console.log(deal);
                                     }
-
-                                    // user block mined.
-                                    User.update({
-                                        userName: req.body.username
-                                    }, {
-                                        $inc: {
-                                            blocksMined: 1
-                                        }
-                                    }, function (err, user) {
-                                        if (err) {
-                                            message = "Error, coudnt increment blocks mined!";
-                                            console.log(message, err);
-                                            res.status(500).json(message);
-                                        }
-
-                                        res.status(200).json(response);
-                                    })
-                                    console.log(deal);
                                 });
 
                             }
@@ -174,13 +177,14 @@ function blocks(req, res, next) {
             };
 
             res.status(500).json(result);
+        } else {
+
+
+            res.status(200).json(blocks);
+
+            //all blocks
+            console.log(blocks);
         }
-
-
-        res.status(200).json(blocks);
-
-        //all blocks
-        console.log(blocks);
     });
 
 }
@@ -193,8 +197,8 @@ function getLatestPuzzle(req, res, next) {
         $natural: -1
     }).exec((err, result) => {
         if (err) {
-            message="Error, while fetching latest puzzle";
-            console.log(message,err);
+            message = "Error, while fetching latest puzzle";
+            console.log(message, err);
             res.status(500).json(message);
         } else {
             res.status(200).json(result);
@@ -206,8 +210,8 @@ function getLatestPuzzle(req, res, next) {
 function allPuzzles(req, res, next) {
     Puzzle.find({}).exec((err, results) => {
         if (err) {
-            message="Error, while fetching puzzles";
-            console.log(message,err);
+            message = "Error, while fetching puzzles";
+            console.log(message, err);
             res.status(500).json(message);
         } else {
             res.status(200).json(results);
@@ -236,13 +240,13 @@ function clearAll(req, res, next) {
                                     res.json(results);
                                 }
                             });
-                           
+
                         }
                     });
-                    
+
                 }
             });
-            
+
 
         }
     });

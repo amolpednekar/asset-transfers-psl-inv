@@ -28,63 +28,65 @@ function createDeal(req, res, next) {
                     message = "Error,There was an error updating fromUser balance!";
                     console.log(message, err);
                     res.status(500).json(message);
-                }
-                if (fromUser == undefined || fromUser == null) {
-                    message = "from_user not found";
-                    console.log(message);
-                    res.status(404).json(message);
                 } else {
-                    //check toUser here
-                    User.findOne({
-                        userName: req.body.toUser
-                    }, (err, toUser) => {
-                        if (err) {
-                            message = "Error, There was an error updating toUser Balance!";
-                            console.log(message, err);
-                            res.status(500).json(message);
-                        }
-                        if (toUser == undefined || toUser == null) {
-                            message = "to_user not found";
-                            console.log(message);
-                            res.status(404).json(message);
-                        } else {
-
-                            //from user balance handling
-                            newBalance1 = fromUser.balance - parseInt(req.body.amount);
-                            fromUser.balance = newBalance1;
-
-                            fromUser.save(function (err) {
-                                if (err) {
-                                    message = "fromUserErr not found";
+                    if (fromUser == undefined || fromUser == null) {
+                        message = "from_user not found";
+                        console.log(message);
+                        res.status(404).json(message);
+                    } else {
+                        //check toUser here
+                        User.findOne({
+                            userName: req.body.toUser
+                        }, (err, toUser) => {
+                            if (err) {
+                                message = "Error, There was an error updating toUser Balance!";
+                                console.log(message, err);
+                                res.status(500).json(message);
+                            } else {
+                                if (toUser == undefined || toUser == null) {
+                                    message = "to_user not found";
                                     console.log(message);
                                     res.status(404).json(message);
-
                                 } else {
-                                    console.log("Updated fromUser");
-                                    //to user balance handling
-                                    newBalance1 = toUser.balance + parseInt(req.body.amount);
-                                    toUser.balance = newBalance1;
-                                    toUser.save(function (err) {
+
+                                    //from user balance handling
+                                    newBalance1 = fromUser.balance - parseInt(req.body.amount);
+                                    fromUser.balance = newBalance1;
+
+                                    fromUser.save(function (err) {
                                         if (err) {
-                                            console.log("toUserErr", err);
-                                            res.status(400).send("toUserErr" + err.errors.balance.message);
+                                            message = "fromUserErr not found";
+                                            console.log(message);
+                                            res.status(404).json(message);
+
                                         } else {
-                                            console.log("Updated toUser");
+                                            console.log("Updated fromUser");
+                                            //to user balance handling
+                                            newBalance1 = toUser.balance + parseInt(req.body.amount);
+                                            toUser.balance = newBalance1;
+                                            toUser.save(function (err) {
+                                                if (err) {
+                                                    console.log("toUserErr", err);
+                                                    res.status(400).send("toUserErr" + err.errors.balance.message);
+                                                } else {
+                                                    console.log("Updated toUser");
 
-                                            console.log("Successfully saved deal to DB!");
-                                            res.status(201).json(response);
+                                                    console.log("Successfully saved deal to DB!");
+                                                    res.status(201).json(response);
+                                                }
+
+                                            });
                                         }
-
                                     });
+
+
                                 }
-                            });
-
-
-                        }
-                    })
+                            }
+                        })
 
 
 
+                    }
                 }
 
 
