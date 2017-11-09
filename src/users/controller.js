@@ -18,7 +18,6 @@ exports.newUser = function (req, res) {
   // create a new user
   var newUser = User({
     userName: username,
-    password: password,
     balance: 100,
     blocksMined: 0
   });
@@ -38,9 +37,8 @@ exports.newUser = function (req, res) {
 
     }
 
-      if(!user.length )
-      {
-       
+    if (!user.length) {
+
       // save the user
       newUser.save(function (err) {
         if (err) {
@@ -62,7 +60,7 @@ exports.newUser = function (req, res) {
 
 
     } else {
-      console.log('User Exists!',user.length);
+      console.log('User Exists!', user.length);
 
       result = {
         message: "User Exists!"
@@ -102,39 +100,19 @@ exports.login = function (req, res) {
       res.status(500).json(result);
 
     }
-console.log(user);
-    if (!user) {
+    console.log(user);
+    if (!user || user == null) {
       result = {
         message: "User Not Found"
       };
-      res.status(200).json(result);
+      res.status(404).json(result);
     } else {
-
-console.log("pass",user.password,password)
-
-      if (user.password == password) {
-        
-        result = {
-          message: "login success"
-        };
-        res.status(200).json(result);
-      } else {
-        result = {
-          message: "password not matching"
-        };
-        res.status(200).json(result);
-      }
-  
-  
+      result = {
+        message: "Login successful"
+      };
+      res.status(200).json(result);
     }
-  
-    });
-  
-     
-    
-
-
-
+  });
 
 };
 
@@ -191,17 +169,15 @@ exports.getUserDetails = function (req, res) {
       res.status(500).json(result);
     }
 
-    if(!user)
-  {
-       result = {
+    if (!user) {
+      result = {
         message: "User Not Found"
       };
       res.status(200).json(result);
-  }
-  else
-  {
-    res.status(200).json(user);
-  }
+    }
+    else {
+      res.status(200).json(user);
+    }
   });
 
 };
