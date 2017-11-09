@@ -34,8 +34,8 @@ app.use(function (err, req, res, next) {
     });
 });
 
-app.use('/', dealRoutes);
-app.use('/', puzzleRoutes)
+app.use('/deals/', dealRoutes);
+app.use('/puzzles/', puzzleRoutes)
 app.use('/users/', userRoutes);
 app.listen(port);
 

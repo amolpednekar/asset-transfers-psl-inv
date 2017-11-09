@@ -11,15 +11,16 @@ router.use(function (req, res, next) {
     next();
 });
 
-router.post('/puzzle/answer', controller.checkPuzzle);
-router.post('/puzzle', controller.savePuzzle);
-router.get('/puzzle',controller.getLatestPuzzle)
+router.post('/solve', controller.checkPuzzle);
+router.post('/save', controller.savePuzzle);
+router.get('/latest',controller.getLatestPuzzle)
+router.get('/all', controller.allPuzzles);
+
 
 router.get('/blocks', controller.blocks);
-router.get('/allPuzzles', controller.allPuzzles);
 
 //test api
-router.get('/clearAll', controller.clearAll);
+router.get('/clear/all', controller.clearAll);
 
 
 

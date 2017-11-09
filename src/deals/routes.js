@@ -11,7 +11,7 @@ router.use(function (req, res, next) {
     next();
 });
 
-router.get('/deals', controller.getAllDeals);
-router.post('/deals', controller.createDeal);
+router.get('/', controller.getAllDeals);
+router.post('/', controller.createDeal);
 
 module.exports = router;
