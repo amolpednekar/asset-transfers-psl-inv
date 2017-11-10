@@ -1,9 +1,9 @@
+const _ = require('lodash');
+
 const Puzzle = require('./puzzleModel');
 const Block = require('./blockModel');
 const Deal = require('../deals/model');
 const User = require('../users/model');
-
-const _ = require('lodash');
 
 var message = "";
 
@@ -85,17 +85,17 @@ function checkPuzzle(req, res, next) {
                         Puzzle.update({
                             _id: req.body.id
                         }, {
-                            status: "Answered"
-                        }, (err, result4) => {
-                            if (err) {
-                                console.log("There was an error while changing the status!", err);
-                                message = "There was an error while changing the status!";
-                                res.status(500).json(message);
+                                status: "Answered"
+                            }, (err, result4) => {
+                                if (err) {
+                                    console.log("There was an error while changing the status!", err);
+                                    message = "There was an error while changing the status!";
+                                    res.status(500).json(message);
 
-                            } else {
-                                console.log("Updated!")
-                            }
-                        })
+                                } else {
+                                    console.log("Updated!")
+                                }
+                            })
 
 
 
@@ -116,40 +116,28 @@ function checkPuzzle(req, res, next) {
                                 const response = "Congratulations! You win! Block saved."
 
                                 //Add deals to the new block
-
-                                Deal.update({
-                                    bid: null
-                                }, {
-                                    bid: newBlock.bid.toString()
-                                }, {
-                                    multi: true
-                                }, function (err, deal) {
-                                    if (err) {
-                                        message = "Error! ,couldnt add block id to deal";
-                                        console.log(message, err);
-                                        res.status(500).json(message);
-                                    } else {
-
-                                        // user block mined.
-                                        User.update({
-                                            userName: req.body.username
-                                        }, {
-                                            $inc: {
-                                                blocksMined: 1
-                                            }
-                                        }, function (err, user) {
-                                            if (err) {
-                                                message = "Error, coudnt increment blocks mined!";
-                                                console.log(message, err);
-                                                res.status(500).json(message);
-                                            } else {
-                                                res.status(200).json(response);
-                                            }
-                                        })
-                                        console.log(deal);
-                                    }
-                                });
-
+                                Deal.update({ bid: null }, { bid: newBlock.bid.toString() }, { multi: true },
+                                    function (err, deal) {
+                                        if (err) {
+                                            message = "Error! ,couldnt add block id to deal";
+                                            console.log(message, err);
+                                            res.status(500).json(message);
+                                        } else {
+                                            // user block 'mined'
+                                            User.update({ userName: req.body.username }, {
+                                                $inc: { blocksMined: 1 }
+                                            }, function (err, user) {
+                                                if (err) {
+                                                    message = "Error, coudnt increment blocks mined!";
+                                                    console.log(message, err);
+                                                    res.status(500).json(message);
+                                                } else {
+                                                    res.status(200).json(response);
+                                                }
+                                            })
+                                            console.log(deal);
+                                        }
+                                    });
                             }
                         });
                     }
@@ -159,38 +147,23 @@ function checkPuzzle(req, res, next) {
                 res.status(409).json(message);
             }
         }
-
     });
-    //res.send("EOR")
-
 }
 
 function blocks(req, res, next) {
-
     // Get all the users
     Block.find({}, function (err, blocks) {
         if (err) {
-            console.log("Error", err);
-
-            result = {
-                message: "error" + err
-            };
-
+            console.log("Error finding all users", err);
+            result = { message: "Error finding all users" + err };
             res.status(500).json(result);
         } else {
-
-
-            res.status(200).json(blocks);
-
-            //all blocks
             console.log(blocks);
+            res.status(200).json(blocks);
         }
     });
 
 }
-
-
-
 
 function getLatestPuzzle(req, res, next) {
     Puzzle.findOne({}).limit(1).sort({
@@ -219,7 +192,8 @@ function allPuzzles(req, res, next) {
     });
 }
 
-//************************************Only for testing purposes*******************************************
+// WARNING: Clear all documents - Dev env only
+
 function clearAll(req, res, next) {
     Puzzle.remove({}).exec((err, results) => {
         if (err) {
@@ -240,25 +214,13 @@ function clearAll(req, res, next) {
                                     res.json(results);
                                 }
                             });
-
                         }
                     });
-
                 }
             });
-
-
         }
     });
-
 }
 
 
-module.exports = {
-    savePuzzle,
-    checkPuzzle,
-    getLatestPuzzle,
-    blocks,
-    allPuzzles,
-    clearAll
-}
+module.exports = { savePuzzle, checkPuzzle, getLatestPuzzle, blocks, allPuzzles, clearAll }

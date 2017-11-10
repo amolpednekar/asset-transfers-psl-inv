@@ -1,23 +1,18 @@
-// grab the user model
 var User = require('./model');
-
 var Moniker = require('moniker');
-/**
- * newUser: REST API to create new user.  
- */
+
+
 function newUser(req, res) {
   console.log('======= New User REST API =======');
   var username = req.body.username;
 
   console.log("details ", username);
 
-  // create a new user
   var newUser = User({
     userName: username,
     balance: 100,
     blocksMined: 0
   });
-
 
   // Check if user exists
   User.find({ userName: username }, function (err, user) {
@@ -90,15 +85,13 @@ function login(req, res) {
 function getUsers(req, res) {
   console.log('======= Get user details REST API =======');
 
-  // Get all the users
   User.find({}, function (err, users) {
     if (err) {
       console.log("Error", err);
       result = { message: "Error , while fetching all users" + err };
       res.status(500).json(result);
     } else {
-      // Object of all the users
-      console.log(users);
+      console.log("Users obj", users);
       res.status(200).json(users);
     }
   });
@@ -110,7 +103,7 @@ function getUserDetails(req, res) {
   console.log('======= Get user details REST API =======');
   var username = req.params.username;
   console.log(username);
-  // Get the User Details
+  
   User.findOne({ userName: username }, function (err, user) {
     if (err) {
       console.log("Error , while fetching user details", err);

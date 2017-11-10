@@ -1,6 +1,7 @@
+const _ = require('lodash')
+
 const Deal = require('./model');
 const User = require('../users/model');
-const _ = require('lodash')
 
 var message = "";
 
@@ -20,10 +21,7 @@ function createDeal(req, res, next) {
             _.assign(response, dealIdObj);
 
             // UPDATE USER BALANCES
-
-            User.findOne({
-                userName: req.body.fromUser
-            }, (err, fromUser) => {
+            User.findOne({ userName: req.body.fromUser }, (err, fromUser) => {
                 if (err) {
                     message = "Error,There was an error updating fromUser balance!";
                     console.log(message, err);
@@ -35,9 +33,7 @@ function createDeal(req, res, next) {
                         res.status(404).json(message);
                     } else {
                         //check toUser here
-                        User.findOne({
-                            userName: req.body.toUser
-                        }, (err, toUser) => {
+                        User.findOne({ userName: req.body.toUser }, (err, toUser) => {
                             if (err) {
                                 message = "Error, There was an error updating toUser Balance!";
                                 console.log(message, err);
@@ -48,7 +44,6 @@ function createDeal(req, res, next) {
                                     console.log(message);
                                     res.status(404).json(message);
                                 } else {
-
                                     //from user balance handling
                                     newBalance1 = fromUser.balance - parseInt(req.body.amount);
                                     fromUser.balance = newBalance1;
@@ -78,22 +73,14 @@ function createDeal(req, res, next) {
                                             });
                                         }
                                     });
-
-
                                 }
                             }
                         })
-
-
-
                     }
                 }
-
-
             })
         }
     })
-
 }
 
 function getAllDeals(req, res, next) {
@@ -111,7 +98,4 @@ function getAllDeals(req, res, next) {
 
 }
 
-module.exports = {
-    createDeal,
-    getAllDeals
-};
+module.exports = { createDeal, getAllDeals };
