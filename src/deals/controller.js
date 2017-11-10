@@ -52,7 +52,7 @@ function createDeal(req, res, next) {
                                         if (err) {
                                             message = "fromUserErr not found";
                                             console.log(message);
-                                            res.status(404).json(message);
+                                            res.status(404).json("toUserErr" + err.errors.balance.message);
 
                                         } else {
                                             console.log("Updated fromUser");
@@ -62,7 +62,7 @@ function createDeal(req, res, next) {
                                             toUser.save(function (err) {
                                                 if (err) {
                                                     console.log("toUserErr", err);
-                                                    res.status(400).send("toUserErr" + err.errors.balance.message);
+                                                    res.status(404).send("toUserErr" + err.errors.balance.message);
                                                 } else {
                                                     console.log("Updated toUser");
 
@@ -98,4 +98,18 @@ function getAllDeals(req, res, next) {
 
 }
 
-module.exports = { createDeal, getAllDeals };
+function getLatestDeal(req, res, next) {
+    Deal.findOne({}).limit(1).sort({
+        $natural: -1
+    }).exec((err, result) => {
+        if (err) {
+            message = "Error, while fetching latest deal";
+            console.log(message, err);
+            res.status(500).json(message);
+        } else {
+            res.status(200).json(result);
+        }
+    });
+}
+
+module.exports = { createDeal, getAllDeals, getLatestDeal };
