@@ -108,7 +108,7 @@ Request body
         "created_at": "2017-11-09T05:17:56.190Z",
         "pid": "5a03e4c0a6457d344c4e5eff",
         "userName": "Siddesh2",
-        "numberOfDeals": 2
+        "numberOfDeals": 2,
         "__v": 0
     }
 ]
