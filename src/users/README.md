@@ -14,16 +14,16 @@ Request body
 }
 ```
 
-* Response (Success) 
+* Response - New User (Success) 
 ```json
 {
     "message": "User created!"
 }
 ```
-* Response (Conflict)
+* Response - Existing User(Success)
 ```json
 {
-    "message": "User Exists!"
+    "message": "User Found, logging in!"
 }
 ```
 
