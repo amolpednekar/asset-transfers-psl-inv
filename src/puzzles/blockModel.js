@@ -47,6 +47,9 @@ var blockSchema = new Schema({
         type: String,
         required: true
     },
+    numberOfDeals:{
+        type: Number
+    }
 
 }, {
     timestamps: {

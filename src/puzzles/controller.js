@@ -123,19 +123,28 @@ function checkPuzzle(req, res, next) {
                                             console.log(message, err);
                                             res.status(500).json(message);
                                         } else {
-                                            // user block 'mined'
-                                            User.update({ userName: req.body.username }, {
-                                                $inc: { blocksMined: 1 }
-                                            }, function (err, user) {
+                                            Block.update({ _id: newBlock._id }, { numberOfDeals: deal.nModified }, function (err, deal) {
                                                 if (err) {
-                                                    message = "Error, coudnt increment blocks mined!";
+                                                    message = "Error! ,couldnt add deals mined number to block";
                                                     console.log(message, err);
                                                     res.status(500).json(message);
                                                 } else {
-                                                    res.status(200).json(response);
+                                                    // user block 'mined'
+                                                    User.update({ userName: req.body.username }, {
+                                                        $inc: { blocksMined: 1 }
+                                                    }, function (err, user) {
+                                                        if (err) {
+                                                            message = "Error, coudnt increment blocks mined!";
+                                                            console.log(message, err);
+                                                            res.status(500).json(message);
+                                                        } else {
+                                                            res.status(200).json(response);
+                                                        }
+                                                    })
+                                                    console.log(deal);
                                                 }
                                             })
-                                            console.log(deal);
+
                                         }
                                     });
                             }
@@ -152,7 +161,9 @@ function checkPuzzle(req, res, next) {
 
 function blocks(req, res, next) {
     // Get all the users
-    Block.find({}, function (err, blocks) {
+    Block.find({}).sort({
+        $natural: -1
+    }).exec(function (err, blocks) {
         if (err) {
             console.log("Error finding all users", err);
             result = { message: "Error finding all users" + err };
@@ -179,6 +190,18 @@ function getLatestPuzzle(req, res, next) {
     });
 }
 
+function getAllBlockDeals(req, res, next) {
+    console.log("bid", req.params.bid)
+    Deal.find({bid:req.params.bid}).exec((err, results) => {
+        if (err) {
+            message = "Error, while fetching blocks";
+            console.log(message, err);
+            res.status(500).json(message);
+        } else {
+            res.status(200).json(results);
+        }
+    });
+}
 
 function allPuzzles(req, res, next) {
     Puzzle.find({}).exec((err, results) => {
@@ -223,4 +246,4 @@ function clearAll(req, res, next) {
 }
 
 
-module.exports = { savePuzzle, checkPuzzle, getLatestPuzzle, blocks, allPuzzles, clearAll }
+module.exports = { savePuzzle, checkPuzzle, getLatestPuzzle, blocks, allPuzzles, clearAll, getAllBlockDeals }

@@ -20,6 +20,8 @@ router.get('/', controller.allPuzzles);
 
 router.get('/blocks', controller.blocks);
 
+router.get('/blocks/:bid', controller.getAllBlockDeals);
+
 //test api
 router.get('/clear/all', controller.clearAll);
 

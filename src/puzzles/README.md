@@ -108,7 +108,28 @@ Request body
         "created_at": "2017-11-09T05:17:56.190Z",
         "pid": "5a03e4c0a6457d344c4e5eff",
         "userName": "Siddesh2",
+        "numberOfDeals": 2
         "__v": 0
     }
+]
+```
+
+#### Get Deals corresponding to a block
+
+* Send `Get` to `/puzzles/blocks/:bid`
+
+* Response (Success) (Eg. For bid = 8)
+```json
+[
+    {
+        "_id": "5a09627cdfff3d5f9818721c",
+        "updatedAt": "2017-11-13T09:14:51.110Z",
+        "created_at": "2017-11-13T09:14:36.366Z",
+        "fromUser": "shaggy_grape",
+        "toUser": "GauravG",
+        "amount": 1,
+        "__v": 0,
+        "bid": "8"
+    },
 ]
 ```
