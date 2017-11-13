@@ -44,12 +44,12 @@ function newUser(req, res) {
           }
         });
       } else {
-        console.log('User Exists!', user.length);
+        console.log('User Found!', user.length);
 
         result = {
-          message: "User Exists!"
+          message: "User Found, logging in!"
         };
-        res.status(409).json(result);
+        res.status(200).json(result);
       }
     }
   });
