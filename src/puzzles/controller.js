@@ -131,7 +131,7 @@ function checkPuzzle(req, res, next) {
                                                 } else {
                                                     // user block 'mined'
                                                     User.update({ userName: req.body.username }, {
-                                                        $inc: { blocksMined: 1 }
+                                                        $inc: { blocksMined: 1 , balance: 25 }
                                                     }, function (err, user) {
                                                         if (err) {
                                                             message = "Error, coudnt increment blocks mined!";
