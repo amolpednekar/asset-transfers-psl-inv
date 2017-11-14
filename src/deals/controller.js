@@ -85,7 +85,7 @@ function createDeal(req, res, next) {
 
 function getAllDeals(req, res, next) {
 
-    const deals = Deal.find({}).limit(10).sort({
+    const deals = Deal.find({}).sort({
         $natural: -1
     }).exec(function (err, obj) {
         if (err) {
@@ -99,7 +99,7 @@ function getAllDeals(req, res, next) {
 }
 
 function getLatestDeal(req, res, next) {
-    Deal.findOne({}).limit(1).sort({
+    Deal.find({}).limit(5).sort({
         $natural: -1
     }).exec((err, result) => {
         if (err) {
