@@ -6,44 +6,45 @@ const User = require('../users/model');
 var message = "";
 
 function createDeal(req, res, next) {
-
-    const newDeal = new Deal(req.body);
-    newDeal.save(function (err) {
+    // UPDATE USER BALANCES
+    User.findOne({ userName: req.body.fromUser }, (err, fromUser) => {
         if (err) {
-            message = "Error, couldn't save deal to DB!";
+            message = "Error,There was an error updating fromUser balance!";
             console.log(message, err);
             res.status(500).json(message);
         } else {
-            const response = req.body;
-            const dealIdObj = {
-                dealId: newDeal._id.toString()
-            }
-            _.assign(response, dealIdObj);
-
-            // UPDATE USER BALANCES
-            User.findOne({ userName: req.body.fromUser }, (err, fromUser) => {
-                if (err) {
-                    message = "Error,There was an error updating fromUser balance!";
-                    console.log(message, err);
-                    res.status(500).json(message);
-                } else {
-                    if (fromUser == undefined || fromUser == null) {
-                        message = "from_user not found";
-                        console.log(message);
-                        res.status(404).json(message);
+            if (fromUser == undefined || fromUser == null) {
+                message = "from_user not found";
+                console.log(message);
+                res.status(404).json(message);
+            } else {
+                //check toUser here
+                User.findOne({ userName: req.body.toUser }, (err, toUser) => {
+                    if (err) {
+                        message = "Error, There was an error updating toUser Balance!";
+                        console.log(message, err);
+                        res.status(500).json(message);
                     } else {
-                        //check toUser here
-                        User.findOne({ userName: req.body.toUser }, (err, toUser) => {
-                            if (err) {
-                                message = "Error, There was an error updating toUser Balance!";
-                                console.log(message, err);
-                                res.status(500).json(message);
-                            } else {
-                                if (toUser == undefined || toUser == null) {
-                                    message = "to_user not found";
-                                    console.log(message);
-                                    res.status(404).json(message);
+                        if (toUser == undefined || toUser == null) {
+                            message = "to_user not found";
+                            console.log(message);
+                            res.status(404).json(message);
+                        } else {
+                            // save deal
+
+                            const newDeal = new Deal(req.body);
+                            newDeal.save(function (err) {
+                                if (err) {
+                                    message = "Error, couldn't save deal to DB!";
+                                    console.log(message, err);
+                                    res.status(500).json(message);
                                 } else {
+                                    const response = req.body;
+                                    const dealIdObj = {
+                                        dealId: newDeal._id.toString()
+                                    }
+                                    _.assign(response, dealIdObj);
+
                                     //from user balance handling
                                     newBalance1 = fromUser.balance - parseInt(req.body.amount);
                                     fromUser.balance = newBalance1;
@@ -74,13 +75,16 @@ function createDeal(req, res, next) {
                                         }
                                     });
                                 }
-                            }
-                        })
+                            })
+
+
+                        }
                     }
-                }
-            })
+                })
+            }
         }
     })
+
 }
 
 function getAllDeals(req, res, next) {

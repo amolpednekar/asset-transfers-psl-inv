@@ -29,7 +29,7 @@ function savePuzzle(req, res, next) {
                     console.log("Successfully saved puzzle to DB!");
                     const response = req.body;
                     const puzzleIdObj = {
-                        puzzleId: newPuzzle._id.toString()
+                        pid: newPuzzle._id.toString()
                     }
                     _.assign(response, puzzleIdObj);
 
@@ -42,7 +42,7 @@ function savePuzzle(req, res, next) {
                 msg: "Previous puzzle unanswered! Please wait",
                 pid: findLastPuzzleResponse._id
             }
-            res.status(409).json(obj);
+            res.status(200).json(obj);
         }
     })
 }
@@ -77,8 +77,8 @@ function checkPuzzle(req, res, next) {
                     } else if (Object.keys(result2).length > 0) {
                         // Block table already has puzzle id entry!
                         console.log("Already solved!", result2);
-                        message = "Sorry, Correct! , But this Puzzle was already solved! Try again!";
-                        res.status(409).json(message);
+                        message = "Sorry! Correct answer, but this Puzzle was already solved!";
+                        res.status(200).json(message);
 
                     } else {
                         // Change status if question to answered
@@ -138,7 +138,7 @@ function checkPuzzle(req, res, next) {
                                                             console.log(message, err);
                                                             res.status(500).json(message);
                                                         } else {
-                                                            res.status(200).json(response);
+                                                            res.status(201).json(response);
                                                         }
                                                     })
                                                     console.log(deal);
@@ -153,7 +153,7 @@ function checkPuzzle(req, res, next) {
                 })
             } else {
                 message = "Sorry! Incorrect Answer!";
-                res.status(409).json(message);
+                res.status(204).json(message);
             }
         }
     });
