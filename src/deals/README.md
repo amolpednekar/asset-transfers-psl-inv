@@ -46,22 +46,24 @@ Request body
 ]
 ```
 
-#### Get last created deal (transaction)
+#### Get last 5 created deals (transaction)
 
 * Send `GET` to `/deals/latest` 
 
 * Response (Success)
 ```json
-{
-    "_id": "5a03e5f0a6457d344c4e5f05",
-    "updatedAt": "2017-11-09T05:22:48.195Z",
-    "created_at": "2017-11-09T05:21:52.038Z",
-    "fromUser": "Siddesh2",
-    "toUser": "Siddesh",
-    "amount": 10,
-    "__v": 0,
-    "bid": "10"
-}
+[
+    {
+        "_id": "5a03e5f0a6457d344c4e5f05",
+        "updatedAt": "2017-11-09T05:22:48.195Z",
+        "created_at": "2017-11-09T05:21:52.038Z",
+        "fromUser": "Siddesh2",
+        "toUser": "Siddesh",
+        "amount": 10,
+        "__v": 0,
+        "bid": "10"
+    },
+]
 ```
 
 
