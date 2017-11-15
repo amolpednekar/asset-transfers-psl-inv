@@ -4,7 +4,7 @@ var Moniker = require('moniker');
 
 function newUser(req, res) {
   console.log('======= New User REST API =======');
-  var username = req.body.username.toLowerCase();
+  var username = req.body.username;
 
   console.log("details ", username);
 
