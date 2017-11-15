@@ -192,7 +192,9 @@ function getLatestPuzzle(req, res, next) {
 
 function getAllBlockDeals(req, res, next) {
     console.log("bid", req.params.bid)
-    Deal.find({bid:req.params.bid}).exec((err, results) => {
+    Deal.find({bid:req.params.bid}).sort({
+        $natural: -1
+    }).exec((err, results) => {
         if (err) {
             message = "Error, while fetching blocks";
             console.log(message, err);
